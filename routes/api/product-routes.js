@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const productData = await Product.findAll({
       attributes: ['id', 'product_name', 'price', 'stock','category_id'],
       include: [{ model: Category,
-        attributes: ['category_name'],
+        attributes: ['id','category_name'],
       },
       { model: Tag, through: ProductTag,
       attributes: ['tag_name'],
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
     const productData = await Product.findByPk(req.params.id, {
       attributes: ['id', 'product_name', 'price', 'stock','category_id'],
       include: [{ model: Category,
-        attributes: ['category_name'],
+        attributes: ['id','category_name'],
       },
       { model: Tag, through: ProductTag,
         attributes: ['tag_name'],
@@ -45,6 +45,7 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
+  console.log(req.body);
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -78,6 +79,7 @@ router.post('/', (req, res) => {
 // update product
 router.put('/:id', (req, res) => {
   // update product data
+  console.log(req.body)
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -112,7 +114,7 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
